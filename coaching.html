@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard</title>
+
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+<style>
+body{
+  margin:0;
+  font-family:Arial,Helvetica,sans-serif;
+  background:#e6e6ea;
+}
+.hidden{display:none}
+
+/* APP BAR */
+.appbar{
+  height:56px;
+  background:#6A1B9A;
+  color:#fff;
+  display:flex;
+  align-items:center;
+  padding:0 16px;
+}
+.appbar .material-icons{
+  font-size:26px;
+  cursor:pointer;
+}
+.appbar h1{
+  font-size:20px;
+  margin-left:16px;
+  flex:1;
+}
+
+/* DRAWER */
+.overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.4);
+  display:none;
+}
+.overlay.show{display:block}
+
+.drawer{
+  position:fixed;
+  top:0;left:0;
+  width:280px;height:100%;
+  background:#fff;
+  transform:translateX(-100%);
+  transition:.3s;
+  z-index:10;
+}
+.drawer.open{transform:translateX(0)}
+
+.drawer-header{
+  background:#6A1B9A;
+  color:#fff;
+  padding:24px 16px;
+}
+.drawer-item{
+  display:flex;
+  align-items:center;
+  gap:16px;
+  padding:14px 20px;
+  cursor:pointer;
+}
+.drawer-item:hover{background:#eee}
+
+/* DASHBOARD */
+.welcome{
+  background:#6A1B9A;
+  color:#fff;
+  padding:20px 16px 40px;
+}
+.card{
+  background:#fff;
+  margin:-20px 16px 16px;
+  border-radius:12px;
+  padding:16px;
+  box-shadow:0 2px 8px rgba(0,0,0,.15);
+}
+.grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:16px;
+  padding:16px;
+}
+.grid-item{
+  background:#fff;
+  border-radius:12px;
+  padding:20px 12px;
+  text-align:center;
+  cursor:pointer;
+  box-shadow:0 2px 8px rgba(0,0,0,.15);
+}
+.grid-item .material-icons{
+  font-size:36px;
+  margin-bottom:8px;
+}
+
+/* ICON COLORS – EXACT MATCH */
+.icon-learning{color:#263238}
+.icon-exams{color:#E53935}
+.icon-videos{color:#26C6DA}
+.icon-downloads{color:#8BC34A}
+.icon-performance{color:#FBC02D}
+.icon-question{color:#26A69A}
+.icon-attendance{color:#1E88E5}
+.icon-schedule{color:#26C6DA}
+.icon-doubts{color:#43A047}
+.icon-fees{color:#F4511E}
+.icon-profile{color:#FFA726}
+.icon-posts{color:#7E57C2}
+
+/* PERFORMANCE */
+.list{padding:10px}
+.list-item{
+  background:#fff;
+  padding:14px;
+  border-radius:8px;
+  margin-bottom:10px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+.badge{
+  width:40px;height:40px;
+  border-radius:50%;
+  background:#e53935;
+  color:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:bold;
+}
+.green{background:#43a047}
+
+/* COMMON PAGE */
+.center{
+  height:80vh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  color:#777;
+}
+.toast{
+  position:fixed;
+  bottom:20px;
+  left:50%;
+  transform:translateX(-50%);
+  background:#333;
+  color:#fff;
+  padding:12px 20px;
+  border-radius:30px;
+}
+</style>
+</head>
+
+<body>
+
+<div id="overlay" class="overlay"></div>
+
+<div id="drawer" class="drawer">
+  <div class="drawer-header">
+    <b>KHOJARE MOKSH</b><br>
+    <small>WANKHEDE MADAMS ACADEMY</small>
+  </div>
+
+  <div class="drawer-item" onclick="openPage()"><span class="material-icons">dashboard</span>Dashboard</div>
+  <div class="drawer-item" onclick="openCommon('Videos')"><span class="material-icons">play_circle</span>Videos</div>
+  <div class="drawer-item" onclick="openCommon('Downloads')"><span class="material-icons">download</span>Downloads</div>
+  <div class="drawer-item" onclick="openCommon('Exams')"><span class="material-icons">emoji_events</span>Exams</div>
+  <div class="drawer-item" onclick="openCommon('Attendance')"><span class="material-icons">how_to_reg</span>Attendance</div>
+  <div class="drawer-item" onclick="openCommon('Question Bank')"><span class="material-icons">school</span>Question Bank</div>
+  <div class="drawer-item" onclick="openCommon('Learning')"><span class="material-icons">menu_book</span>Learning</div>
+  <div class="drawer-item" onclick="openCommon('Doubts')"><span class="material-icons">help</span>Doubts</div>
+  <div class="drawer-item" onclick="openCommon('Profile')"><span class="material-icons">person</span>Profile</div>
+  <div class="drawer-item" onclick="openPerformance()"><span class="material-icons">trending_up</span>Performance</div>
+  <div class="drawer-item" onclick="openCommon('Schedule')"><span class="material-icons">schedule</span>Schedule</div>
+  <div class="drawer-item" onclick="openCommon('Posts')"><span class="material-icons">mail</span>Posts</div>
+  <div class="drawer-item" onclick="openCommon('Fees')"><span class="material-icons">currency_rupee</span>Fees</div>
+</div>
+
+<div id="dashboard">
+  <div class="appbar">
+    <span class="material-icons" onclick="openDrawer()">menu</span>
+    <h1>Dashboard</h1>
+  </div>
+
+  <div class="welcome">
+    <h2>Welcome,</h2>
+    <strong>KHOJARE MOKSH</strong>
+  </div>
+
+  <div class="card">
+    <p>For teacher appointment Contact: 9049152520</p>
+    <p>For any queries Contact: 9823163693</p>
+  </div>
+
+  <div class="grid">
+    <div class="grid-item" onclick="openCommon('Learning')">
+      <span class="material-icons icon-learning">menu_book</span><div>Learning</div>
+    </div>
+    <div class="grid-item" onclick="openCommon('Exams')">
+      <span class="material-icons icon-exams">emoji_events</span><div>Exams</div>
+    </div>
+    <div class="grid-item" onclick="openCommon('Videos')">
+      <span class="material-icons icon-videos">play_circle</span><div>Videos</div>
+    </div>
+    <div class="grid-item" onclick="openCommon('Downloads')">
+      <span class="material-icons icon-downloads">download</span><div>Downloads</div>
+    </div>
+    <div class="grid-item" onclick="openPerformance()">
+      <span class="material-icons icon-performance">trending_up</span><div>My Performance</div>
+    </div>
+    <div class="grid-item" onclick="openCommon('Question Bank')">
+      <span class="material-icons icon-question">school</span><div>Question Bank</div>
+    </div>
+    <div class="grid-item" onclick="openCommon('Attendance')">
+      <span class="material-icons icon-attendance">how_to_reg</span><div>Attendance</div>
+    </div>
+    <div class="grid-item" onclick="openCommon('Schedule')">
+      <span class="material-icons icon-schedule">schedule</span><div>My Schedules</div>
+    </div>
+    <div class="grid-item" onclick="openCommon('Doubts')">
+      <span class="material-icons icon-doubts">help</span><div>Doubts</div>
+    </div>
+    <div class="grid-item" onclick="openCommon('Fees')">
+      <span class="material-icons icon-fees">currency_rupee</span><div>Fees</div>
+    </div>
+    <div class="grid-item" onclick="openCommon('Profile')">
+      <span class="material-icons icon-profile">person</span><div>Profile</div>
+    </div>
+    <div class="grid-item" onclick="openCommon('Posts')">
+      <span class="material-icons icon-posts">mail</span><div>Posts</div>
+    </div>
+  </div>
+</div>
+
+<div id="performance" class="hidden">
+  <div class="appbar">
+    <span class="material-icons" onclick="goHome()">arrow_back</span>
+    <h1>My Performance</h1>
+  </div>
+
+  <div class="list">
+    <div class="list-item"><div>ANIMAL TISSUE</div><div class="badge">AB</div></div>
+    <div class="list-item"><div>ANATOMY</div><div class="badge green">92%</div></div>
+    <div class="list-item"><div>CIRCULATION</div><div class="badge green">88%</div></div>
+  </div>
+</div>
+
+<div id="common" class="hidden">
+  <div class="appbar">
+    <span class="material-icons" onclick="goHome()">arrow_back</span>
+    <h1 id="commonTitle"></h1>
+  </div>
+
+  <div class="center">
+    <div style="font-size:80px">🚀</div>
+    <p>No content here</p>
+  </div>
+
+  <div class="toast">No data found for your class</div>
+</div>
+
+<script>
+const dashboard=document.getElementById("dashboard");
+const performance=document.getElementById("performance");
+const common=document.getElementById("common");
+const drawer=document.getElementById("drawer");
+const overlay=document.getElementById("overlay");
+const commonTitle=document.getElementById("commonTitle");
+
+overlay.onclick=closeDrawer;
+
+function openDrawer(){
+  drawer.classList.add("open");
+  overlay.classList.add("show");
+}
+function closeDrawer(){
+  drawer.classList.remove("open");
+  overlay.classList.remove("show");
+}
+function openPerformance(){
+  closeDrawer();
+  dashboard.classList.add("hidden");
+  common.classList.add("hidden");
+  performance.classList.remove("hidden");
+}
+function openCommon(title){
+  closeDrawer();
+  commonTitle.textContent=title;
+  dashboard.classList.add("hidden");
+  performance.classList.add("hidden");
+  common.classList.remove("hidden");
+}
+function openPage(){
+  closeDrawer();
+  performance.classList.add("hidden");
+  common.classList.add("hidden");
+  dashboard.classList.remove("hidden");
+}
+function goHome(){openPage();}
+</script>
+
+</body>
+</html>
